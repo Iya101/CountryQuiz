@@ -11,19 +11,19 @@ public class countryDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Table Names
-    private static final String TABLE_COUNTRIES = "countries";
-    private static final String TABLE_QUIZZES = "quizzes";
+    public static final String TABLE_COUNTRIES = "countries";
+    public static final String TABLE_QUIZZES = "quizzes";
 
     // Common column names
-    private static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "_id";
 
     // Countries Table - column names
-    private static final String COLUMN_COUNTRY_NAME = "name";
-    private static final String COLUMN_CONTINENT = "continent";
+    public static final String COLUMN_COUNTRY_NAME = "name";
+    public static final String COLUMN_CONTINENT = "continent";
 
     // Quizzes Table - column names
-    private static final String COLUMN_QUIZ_DATE = "quiz_date";
-    private static final String COLUMN_QUIZ_RESULT = "result";
+    public static final String COLUMN_QUIZ_DATE = "quiz_date";
+    public static final String COLUMN_QUIZ_RESULT = "result";
 
     private static countryDBHelper helperInstance;
 
@@ -50,14 +50,24 @@ public class countryDBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    public static synchronized countryDBHelper getInstance( Context context ) {
+        // check if the instance already exists and if not, create the instance
+        if( helperInstance == null ) {
+            helperInstance = new countryDBHelper( context.getApplicationContext() );
+        }
+        return helperInstance;
+    }
     @Override
     public void onCreate(SQLiteDatabase db) {
         // creating required tables
         db.execSQL(CREATE_TABLE_COUNTRIES);
         db.execSQL(CREATE_TABLE_QUIZZES);
-        Log.d( DEBUG_TAG, "Table " + CREATE_TABLE_COUNTRIES + " created" );
 
-    Log.d( DEBUG_TAG, "Table " + CREATE_TABLE_QUIZZES + " created" );
+        db.execSQL("INSERT INTO Countries (name, continent) VALUES ('Germany', 'Europe');");
+        db.execSQL("INSERT INTO Quizzes (date, score) VALUES ('2023-04-01 14:00:00', 8);");
+
+        Log.d( DEBUG_TAG, "Table " + CREATE_TABLE_COUNTRIES + " created" );
+        Log.d( DEBUG_TAG, "Table " + CREATE_TABLE_QUIZZES + " created" );
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -69,5 +79,6 @@ public class countryDBHelper extends SQLiteOpenHelper {
         Log.d( DEBUG_TAG, "Table " + TABLE_COUNTRIES+ " upgraded" );
         Log.d( DEBUG_TAG, "Table " + TABLE_QUIZZES+ " upgraded" );
     }
+
 }
 
