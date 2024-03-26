@@ -57,7 +57,7 @@ public class countryDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_QUIZZES);
         Log.d( DEBUG_TAG, "Table " + CREATE_TABLE_COUNTRIES + " created" );
 
-        Log.d( DEBUG_TAG, "Table " + CREATE_TABLE_QUIZZES + " created" );
+    Log.d( DEBUG_TAG, "Table " + CREATE_TABLE_QUIZZES + " created" );
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -70,3 +70,4 @@ public class countryDBHelper extends SQLiteOpenHelper {
         Log.d( DEBUG_TAG, "Table " + TABLE_QUIZZES+ " upgraded" );
     }
 }
+
