@@ -46,7 +46,7 @@ public class countryDBHelper extends SQLiteOpenHelper {
             + COLUMN_QUIZ_RESULT + " INTEGER"
             + ")";
 
-    public countryDBHelper(Context context) {
+    private countryDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
