@@ -11,7 +11,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.opencsv.CSVReader;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
