@@ -154,7 +154,7 @@ public class CountryQuizData {
         ContentValues values = new ContentValues();
         values.put( countryDBHelper.COLUMN_COUNTRY_NAME, country.getCountryName());
         values.put( countryDBHelper.COLUMN_CONTINENT, country.getContinent());
-       // values.put( countryDBHelper.COLUMN_QUIZ_DATE, country.getPhone());
+        // values.put( countryDBHelper.COLUMN_QUIZ_DATE, country.getPhone());
         //values.put( countryDBHelper.COLUMN_QUIZ_RESULT, country.getUrl());
 
         // Insert the new row into the database table;
