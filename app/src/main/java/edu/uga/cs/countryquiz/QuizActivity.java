@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class QuizActivity extends AppCompatActivity {
     private CountryQuizData countryQuizData;
@@ -36,45 +39,45 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void generateQuiz() {
-        // Example pseudocode for fetching countries and generating questions
+        // Retrieve all countries from the database
         List<Country> allCountries = countryQuizData.retrieveAllCountries();
         if (allCountries.isEmpty()) {
             Log.e("QuizActivity", "No countries found in the database.");
-            // Handle the case when there are no countries, e.g., display a message to the user
+            // Consider showing a message to the user
             return;
         }
-        Collections.shuffle(allCountries); // Now safe to shuffle
 
+        // Use a Set to ensure unique countries are selected
+        Set<Country> selectedCountries = new HashSet<>();
+        Random random = new Random();
+        while (selectedCountries.size() < 6) {
+            int randomIndex = random.nextInt(allCountries.size());
+            selectedCountries.add(allCountries.get(randomIndex));
+        }
+
+        // Initialize a new Quiz
         Quiz newQuiz = new Quiz();
-        for (int i = 0; i < 6; i++) {
-            Country country = allCountries.get(i);
 
-            // Copy of all continents to manipulate
-            //
-            // List<String> possibleContinents = new ArrayList<>(country.getContinent());
-            List<String> possibleContinents = countryQuizData.getAllContinents();
-            // Remove the correct continent to avoid selecting it as an incorrect option
-            possibleContinents.remove(country.getContinent());
+        // For each selected country, prepare a question
+        for (Country country : selectedCountries) {
+            List<String> continents = countryQuizData.getAllContinents(); // Assume this gets all possible continents
+            continents.remove(country.getContinent()); // Remove the correct answer
+            Collections.shuffle(continents); // Shuffle the remaining continents
 
-            // Shuffle and select the first two as incorrect options
-            Collections.shuffle(possibleContinents);
-            List<String> selectedOptions = possibleContinents.subList(0, 2);
+            // Select two incorrect options
+            List<String> selectedOptions = continents.subList(0, 2);
+            selectedOptions.add(country.getContinent()); // Add the correct answer
+            Collections.shuffle(selectedOptions); // Shuffle to randomize positions
 
-            // Add the correct answer to the options
-            selectedOptions.add(country.getContinent());
-
-            // Ensure the options are shuffled so the correct answer isn't always last
-            Collections.shuffle(selectedOptions);
-
-            // Create a new Question object with these options
+            // Create and add the question to the quiz
             Question question = new Question(country.getCountryName(), country.getContinent(), selectedOptions);
             newQuiz.addQuestion(question);
         }
 
-
-        // Now display the first question
+        // Assuming displayQuestion() is properly implemented to show a question and its options
         displayQuestion(newQuiz.getQuestions().get(0));
     }
+
 
     private void displayQuestion(Question question) {
         // Update the question text view with the current question's text
