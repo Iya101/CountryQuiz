@@ -50,6 +50,15 @@ public class Quiz {
         this.quizDate = quizDate;
     }
 
+    public int getQuizResult()
+    {
+        return quizResult;
+    }
+
+    public void setQuizResult(int quizResult)
+    {
+        this.quizResult = quizResult;
+    }
 
     // Getter and setter for questionsAnswered
     public int getQuestionsAnswered() {
