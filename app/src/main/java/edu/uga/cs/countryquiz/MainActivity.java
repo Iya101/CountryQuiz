@@ -2,6 +2,7 @@ package edu.uga.cs.countryquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,8 +23,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button rankingButton = findViewById( R.id.button );
+        Button rankingButton = findViewById( R.id.displayRankingButton );
         rankingButton.setOnClickListener(new ButtonClickListener());
+
+        Button startQuizButton = findViewById(R.id.startQuizButton);
+        startQuizButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private class ButtonClickListener implements View.OnClickListener {
