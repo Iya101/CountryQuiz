@@ -1,8 +1,12 @@
 package edu.uga.cs.countryquiz;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class countryDBHelper extends SQLiteOpenHelper {
 
@@ -57,18 +61,21 @@ public class countryDBHelper extends SQLiteOpenHelper {
         }
         return helperInstance;
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // creating required tables
         db.execSQL(CREATE_TABLE_COUNTRIES);
         db.execSQL(CREATE_TABLE_QUIZZES);
 
-        db.execSQL("INSERT INTO Countries (name, continent) VALUES ('Germany', 'Europe');");
-        db.execSQL("INSERT INTO Quizzes (date, score) VALUES ('2023-04-01 14:00:00', 8);");
+        // Corrected INSERT statements to match the column names
+        db.execSQL("INSERT INTO countries (name, continent) VALUES ('Germany', 'Europe');");
+        db.execSQL("INSERT INTO quizzes (quiz_date, result) VALUES ('2023-04-01 14:00:00', 8);");
 
-        Log.d( DEBUG_TAG, "Table " + CREATE_TABLE_COUNTRIES + " created" );
-        Log.d( DEBUG_TAG, "Table " + CREATE_TABLE_QUIZZES + " created" );
+        Log.d(DEBUG_TAG, "Table " + TABLE_COUNTRIES + " created");
+        Log.d(DEBUG_TAG, "Table " + TABLE_QUIZZES + " created");
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // on upgrade drop older tables
@@ -81,4 +88,3 @@ public class countryDBHelper extends SQLiteOpenHelper {
     }
 
 }
-
