@@ -2,6 +2,7 @@ package edu.uga.cs.countryquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -11,7 +12,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.opencsv.CSVReader;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -23,8 +23,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button rankingButton = findViewById( R.id.button );
+        Button rankingButton = findViewById( R.id.displayRankingButton );
         rankingButton.setOnClickListener(new ButtonClickListener());
+
+        Button startQuizButton = findViewById(R.id.startQuizButton);
+        startQuizButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private class ButtonClickListener implements View.OnClickListener {

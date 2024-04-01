@@ -16,6 +16,7 @@ public class CountryQuizData {
 
     // this is a reference to our database; it is used later to run SQL commands
     private SQLiteDatabase db;
+    private Cursor cursor = null;
     private SQLiteOpenHelper countryDbHelper;
 
     private static final String[] allColumns = {
@@ -25,6 +26,20 @@ public class CountryQuizData {
             countryDBHelper.COLUMN_QUIZ_DATE,
             countryDBHelper.COLUMN_QUIZ_RESULT,
     };
+
+    private static final String[] allColumnsCountries = {
+            countryDBHelper.COLUMN_ID,
+            countryDBHelper.COLUMN_COUNTRY_NAME,
+            countryDBHelper.COLUMN_CONTINENT
+    };
+
+    private static final String[] allColumnsQuizzes = {
+            countryDBHelper.COLUMN_ID,
+            countryDBHelper.COLUMN_QUIZ_DATE,
+            countryDBHelper.COLUMN_QUIZ_RESULT
+    };
+
+
 
     public CountryQuizData(Context context) {
         this.countryDbHelper = countryDBHelper.getInstance(context);
@@ -48,13 +63,14 @@ public class CountryQuizData {
 
     public List<Country> retrieveAllCountries() {
         ArrayList<Country> countries = new ArrayList<>();
-        Cursor cursor = null;
+        //Cursor cursor = null;
         int columnIndex;
 
         try {
             // Execute the select query and get the Cursor to iterate over the retrieved rows
-            cursor = db.query(countryDBHelper.TABLE_COUNTRIES, allColumns,
+            cursor = db.query(countryDBHelper.TABLE_COUNTRIES, allColumnsCountries,
                     null, null, null, null, null);
+
 
             // collect all job leads into a List
             if (cursor != null && cursor.getCount() > 0) {
@@ -80,7 +96,7 @@ public class CountryQuizData {
                         country.setId(id); // set the id (the primary key) of this object
                         // add it to the list
                         countries.add(country);
-                        Log.d(DEBUG_TAG, "Retrieved JobLead: " + country);
+                        Log.d(DEBUG_TAG, "Retrieved Country: " + country);
                     }
                 }
             }
@@ -99,6 +115,34 @@ public class CountryQuizData {
         // return a list of retrieved countries
         return countries;
     }
+
+    public List<String> getAllContinents() {
+        List<String> continents = new ArrayList<>();
+        int columnIndex;
+        cursor = db.query(countryDBHelper.COLUMN_CONTINENT, allColumns,
+                null, null, null, null, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+
+            while (cursor.moveToNext()) {
+                if (cursor.getColumnCount() >= 5) {
+                    columnIndex = cursor.getColumnIndex(countryDBHelper.COLUMN_CONTINENT);
+                    String continent = cursor.getString(columnIndex);
+                    continents.add(continent);
+                }
+            }
+        }
+
+
+
+        if(cursor != null) {
+            cursor.close();
+        }
+        //db.close();
+        return continents;
+    }
+
+
 
     // Store a new job lead in the database.
     public Country storeCountry( Country country) {
