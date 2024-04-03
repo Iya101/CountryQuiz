@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 public class SwipeActivity extends AppCompatActivity {
 
+    //thought we would need, using QuizActivity instead
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -25,10 +25,9 @@ public class Question {
         this.options = new ArrayList<>(options);
     }
 
-    public String getQuestionText() {
-        return "Which continent does " + countryName + " belong to?";
-    }
-
+    //public String getQuestionText() {
+      //  return "Which continent does " + countryName + " belong to?";
+   // }
 
 
 
