@@ -3,6 +3,8 @@ package edu.uga.cs.countryquiz;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,22 +19,23 @@ public class CountryQuizFragment extends Fragment {
     // Define keys for argument bundle
     private static final String ARG_COUNTRY_NAME = "countryName";
     private static final String ARG_OPTIONS = "options";
+    private static final String ARG_QUESTION_INDEX = "questionIndex";
 
     // Instance variables for UI components
     private TextView questionTextView;
     private RadioGroup optionsRadioGroup;
-    private Button submitAnswerButton;
+
 
     public CountryQuizFragment() {
         // Required empty public constructor
     }
 
-    // Factory method to create a new instance of this fragment with question and options
-    public static CountryQuizFragment newInstance(String countryName, ArrayList<String> options) {
+    public static CountryQuizFragment newInstance(String countryName, ArrayList<String> options, int questionIndex) {
         CountryQuizFragment fragment = new CountryQuizFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_COUNTRY_NAME, countryName); // New argument for country name
+        args.putString(ARG_COUNTRY_NAME, countryName);
         args.putStringArrayList(ARG_OPTIONS, options);
+        args.putInt(ARG_QUESTION_INDEX, questionIndex);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,17 +49,33 @@ public class CountryQuizFragment extends Fragment {
         // Initialize UI components
         questionTextView = view.findViewById(R.id.questionTextView);
         optionsRadioGroup = view.findViewById(R.id.optionsRadioGroup);
-        submitAnswerButton = view.findViewById(R.id.submitAnswerButton);
 
-        // Setup question and options
+
+
         displayQuestion(view);
 
-        // Handle submit button click
-        submitAnswerButton.setOnClickListener(v -> {
-            // Implement action on submit answer here
-        });
-
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        int questionIndex = getArguments().getInt(ARG_QUESTION_INDEX);
+
+        // Set the listener for the radio group to detect answer selections
+        optionsRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton selectedOption = view.findViewById(checkedId);
+            if (selectedOption != null) {
+                String selectedAnswer = selectedOption.getText().toString();
+                Log.d("QuizFragment", "Answer selected for question index " + questionIndex + ": " + selectedAnswer);
+
+
+                // Cast getActivity() to QuizActivity and call updateScore
+                if (getActivity() instanceof QuizActivity) {
+                    ((QuizActivity) getActivity()).updateScore(selectedAnswer, questionIndex);
+                }
+            }
+        });
     }
 
     private void displayQuestion(View view) {
@@ -74,7 +93,6 @@ public class CountryQuizFragment extends Fragment {
             RadioButton option3 = view.findViewById(R.id.option3RadioButton);
 
 
-            // Assuming there are always exactly 4 options, otherwise check for null or options size
             option1.setText(options.get(0));
             option2.setText(options.get(1));
             option3.setText(options.get(2));
@@ -82,5 +100,6 @@ public class CountryQuizFragment extends Fragment {
         }
     }
 
-    // You may need additional methods for handling answer submission and interaction with the Activity
+
+
 }

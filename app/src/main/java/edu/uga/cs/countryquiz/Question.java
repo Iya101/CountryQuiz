@@ -30,7 +30,6 @@ public class Question {
    // }
 
 
-
     public long getId()
     {
         return id;
@@ -52,13 +51,16 @@ public class Question {
         return correctContinent;
     }
 
-    public void getCorrectContinent(String correctContinent)
+    public void setCorrectContinent(String correctContinent)
     {
         this.correctContinent = correctContinent;
     }
 
     public List<String> getOptions() {
         return options;
+    }
+    public void setOptions(List<String> options) {
+        this.options = new ArrayList<>(options);
     }
 
     @Override
