@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -140,6 +141,8 @@ public class QuizActivity extends AppCompatActivity {
             return null;
         }
 
+
+
         @Override
         protected void onPostExecute(Void aVoid) {
 
@@ -147,4 +150,29 @@ public class QuizActivity extends AppCompatActivity {
             // Since AsyncTask runs on a background thread, remember any UI updates must be run on the UI thread.
         }
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("CurrentQuestionIndex", viewPager.getCurrentItem());
+        editor.putInt("Score", newQuiz.getQuizResult());
+        editor.apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
+        int savedIndex = prefs.getInt("CurrentQuestionIndex", -1);
+        int savedScore = prefs.getInt("Score", 0);
+        if (savedIndex != -1) {
+            viewPager.setCurrentItem(savedIndex);
+            newQuiz.setQuizResult(savedScore);
+            // Add any additional logic needed to restore the quiz state
+        }
+    }
+
 }

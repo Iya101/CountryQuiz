@@ -225,4 +225,54 @@ public class CountryQuizData {
 
         return quiz;
     }
+
+
+    //maybe delete? idk
+
+    public List<QuizResult> retrievePastQuizzes() {
+        List<QuizResult> quizResults = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+            // Open the database for reading
+            db = countryDbHelper.getReadableDatabase();
+
+            // Define a projection that specifies which columns from the database
+            // you will actually use after this query.
+            String[] projection = {
+                    countryDBHelper.COLUMN_ID,
+                    countryDBHelper.COLUMN_QUIZ_DATE,
+                    countryDBHelper.COLUMN_QUIZ_RESULT
+            };
+
+            // Perform a query on the quizzes table
+            cursor = db.query(
+                    countryDBHelper.TABLE_QUIZZES,   // The table to query
+                    projection,             // The columns to return
+                    null,              // The columns for the WHERE clause
+                    null,          // The values for the WHERE clause
+                    null,                   // don't group the rows
+                    null,                   // don't filter by row groups
+                    null               // The sort order
+            );
+
+            while (cursor.moveToNext()) {
+                long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(countryDBHelper.COLUMN_ID));
+                String quizDate = cursor.getString(cursor.getColumnIndexOrThrow(countryDBHelper.COLUMN_QUIZ_DATE));
+                int quizResult = cursor.getInt(cursor.getColumnIndexOrThrow(countryDBHelper.COLUMN_QUIZ_RESULT));
+                QuizResult result = new QuizResult(itemId, quizDate, quizResult);
+                quizResults.add(result);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return quizResults;
+    }
+
 }

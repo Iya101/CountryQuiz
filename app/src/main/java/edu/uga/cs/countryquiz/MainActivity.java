@@ -31,6 +31,23 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, QuizActivity.class);
             startActivity(intent);
         });
+
+        // Button to view past quizzes
+        Button viewPastQuizzesButton = findViewById(R.id.displayRankingButton);
+        viewPastQuizzesButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PastQuizzesActivity.class);
+            startActivity(intent);
+        });
+
         new DatabaseInitializer(this).execute();
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Clear any saved quiz state to ensure starting fresh for a new quiz
+        getSharedPreferences("QuizPrefs", MODE_PRIVATE).edit().clear().apply();
+    }
+
 }
