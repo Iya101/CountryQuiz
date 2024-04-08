@@ -57,70 +57,6 @@ public class CountryQuizData {
         }
     }
 
-    public boolean isDBOpen() {
-        return db.isOpen();
-    }
-
-    // This is an AsyncTask class (it extends AsyncTask) to perform DB writing of a job lead, asynchronously.
-    public class QuizAnswerDBWriter extends AsyncTask<Quiz, Quiz> {
-
-        // This method will run as a background process to write into db.
-        // It will be automatically invoked by Android, when we call the execute method
-        // in the onClick listener of the Save button.
-        @Override
-        protected Quiz doInBackground( Quiz... quizzes ) {
-            //CountryQuizData.storeQuiz( quizzes[0] );
-            return quizzes[0];
-        }
-
-        // This method will be automatically called by Android once the writing to the database
-        // in a background process has finished.  Note that doInBackground returns a JobLead object.
-        // That object will be passed as argument to onPostExecute.
-        // onPostExecute is like the notify method in an asynchronous method call discussed in class.
-        @Override
-        protected void onPostExecute( Quiz quiz ) {
-
-            //the system should record the user’s answer to
-            //the currently shown question.
-
-
-            //jobLeadsList.add( jobLead );
-
-            // Sync the originalValues list in the recycler adapter to the new updated list (JoLeadsList)
-            //recyclerAdapter.sync();
-
-            // Notify the adapter that an item has been inserted
-            //recyclerAdapter.notifyItemInserted(jobLeadsList.size() - 1 );
-
-
-           // Log.d( TAG, "lead saved: " + jobLead );
-
-        }
-    }
-
-    public class StoreQuizResult extends AsyncTask<Quiz, Void> {
-        private CountryQuizData countryQuizData;
-
-        public StoreQuizResult(Context context) {
-            this.countryQuizData = new CountryQuizData(context);
-        }
-
-        @Override
-        protected Void doInBackground(Quiz... quizzes) {
-            countryQuizData.open();
-            countryQuizData.storeQuiz(quizzes[0]);
-            countryQuizData.close();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-            // Navigate to the results screen or update the UI as necessary
-        }
-    }
-
-
     public List<Country> retrieveAllCountries() {
         List<Country> countries = new ArrayList<>();
         Cursor cursor = db.query(countryDBHelper.TABLE_COUNTRIES,allColumnsCountries,
@@ -163,7 +99,7 @@ public class CountryQuizData {
                 // Directly fetch the continent from each row without checking column count
                 String continent = cursor.getString(cursor.getColumnIndex(countryDBHelper.COLUMN_CONTINENT));
                 if (!continents.contains(continent)) {
-                    continents.add(continent); // Add unique continents to the list
+                    continents.add(continent);
                 }
             } while (cursor.moveToNext());
         }
@@ -172,7 +108,6 @@ public class CountryQuizData {
         }
         return continents;
     }
-
 
 
 
@@ -221,16 +156,15 @@ public class CountryQuizData {
         // store the id (the primary key) in the JobLead instance, as it is now persistent
         quiz.setId( id );
 
-        Log.d( DEBUG_TAG, "Stored quiz with id: " + String.valueOf( quiz.getId() ) );
+        Log.d( DEBUG_TAG, "Stored quiz with id: " + quiz.getId() );
 
         return quiz;
     }
 
 
     //maybe delete? idk
-
-    public List<QuizResult> retrievePastQuizzes() {
-        List<QuizResult> quizResults = new ArrayList<>();
+    public List<Quiz> retrievePastQuizzes() {
+        List<Quiz> quizzes = new ArrayList<>();
         Cursor cursor = null;
 
         try {
@@ -257,14 +191,20 @@ public class CountryQuizData {
             );
 
             while (cursor.moveToNext()) {
-                long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(countryDBHelper.COLUMN_ID));
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(countryDBHelper.COLUMN_ID));
                 String quizDate = cursor.getString(cursor.getColumnIndexOrThrow(countryDBHelper.COLUMN_QUIZ_DATE));
                 int quizResult = cursor.getInt(cursor.getColumnIndexOrThrow(countryDBHelper.COLUMN_QUIZ_RESULT));
-                QuizResult result = new QuizResult(itemId, quizDate, quizResult);
-                quizResults.add(result);
+
+                Quiz quiz = new Quiz(quizDate, quizResult, 0);
+                quiz.setId(id); // Set the ID of the quiz object
+                quizzes.add(quiz);
+
+                Log.d(DEBUG_TAG, "Retrieved Quiz: ID=" + id + ", Date=" + quizDate + ", Result=" + quizResult);
+
             }
         } finally {
             if (cursor != null) {
+                Log.d(DEBUG_TAG, "Number of quizzes retrieved from DB: " + cursor.getCount());
                 cursor.close();
             }
             if (db != null) {
@@ -272,7 +212,8 @@ public class CountryQuizData {
             }
         }
 
-        return quizResults;
+        return quizzes;
     }
+
 
 }

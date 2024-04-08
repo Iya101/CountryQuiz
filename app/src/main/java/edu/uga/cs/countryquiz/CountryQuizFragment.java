@@ -50,8 +50,6 @@ public class CountryQuizFragment extends Fragment {
         questionTextView = view.findViewById(R.id.questionTextView);
         optionsRadioGroup = view.findViewById(R.id.optionsRadioGroup);
 
-
-
         displayQuestion(view);
 
         return view;
@@ -68,7 +66,6 @@ public class CountryQuizFragment extends Fragment {
             if (selectedOption != null) {
                 String selectedAnswer = selectedOption.getText().toString();
                 Log.d("QuizFragment", "Answer selected for question index " + questionIndex + ": " + selectedAnswer);
-
 
                 // Cast getActivity() to QuizActivity and call updateScore
                 if (getActivity() instanceof QuizActivity) {

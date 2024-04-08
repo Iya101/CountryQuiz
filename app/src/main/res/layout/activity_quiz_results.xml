@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".QuizResultsActivity">
 
-    <!-- Quiz Results TextView -->
+
+
+
     <TextView
         android:id="@+id/quizResultsTextView"
         android:layout_width="wrap_content"
@@ -23,12 +25,22 @@
         android:id="@+id/scoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginTop="32dp"
         android:text="Your score will appear here"
-        app:layout_constraintTop_toBottomOf="@id/quizResultsTextView"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/quizResultsTextView" />
+
+    <Button
+        android:id="@+id/seePastQuizzesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See past Quizzes"
+        app:layout_constraintTop_toBottomOf="@+id/scoreTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="24dp"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

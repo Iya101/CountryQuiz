@@ -1,5 +1,6 @@
 package edu.uga.cs.countryquiz;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,13 @@ import java.util.List;
 
 public class QuizResultsAdapter extends RecyclerView.Adapter<QuizResultsAdapter.ViewHolder> {
 
-    private List<QuizResult> quizResults;
+    private List<Quiz> quizResults;
+    private static final String TAG = "QuizResultsAdapter";
 
     // Constructor
-    public QuizResultsAdapter(List<QuizResult> quizResults) {
+    public QuizResultsAdapter(List<Quiz> quizResults) {
+        Log.d(TAG, "QuizResultsAdapter constructor called. QuizResults size: " + quizResults.size());
+
         this.quizResults = quizResults;
     }
 
@@ -46,18 +50,19 @@ public class QuizResultsAdapter extends RecyclerView.Adapter<QuizResultsAdapter.
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder called for position " + position);
         // Get element from your dataset at this position
         // Replace the contents of the view with that element
-        QuizResult quizResult = quizResults.get(position);
+        Quiz quizResult = quizResults.get(position);
         holder.getQuizDateView().setText(quizResult.getQuizDate());
-        holder.getQuizScoreView().setText(String.valueOf(quizResult.getQuizScore()));
+        holder.getQuizScoreView().setText(String.valueOf(quizResult.getQuizResult()));
     }
-
 
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
+        Log.d(TAG, "getItemCount called. Returning: " + quizResults.size());
         return quizResults.size();
     }
 }

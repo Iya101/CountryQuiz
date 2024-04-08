@@ -2,6 +2,7 @@ package edu.uga.cs.countryquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Lifecycle;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
@@ -13,11 +14,15 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
@@ -33,13 +38,13 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_swipe); // Confirm this is the correct layout with ViewPager2
+        setContentView(R.layout.activity_swipe);
 
         viewPager = findViewById(R.id.viewpager);
         countryQuizData = new CountryQuizData(this);
         countryQuizData.open();
-        newQuiz = generateQuiz(); // Adjust generateQuiz to return a Quiz object
-        countryQuizData.close();
+        newQuiz = generateQuiz();
+
 
         // Setup ViewPager with the quiz questions
         CountryQuizPagerAdapter adapter = new CountryQuizPagerAdapter(getSupportFragmentManager(), getLifecycle(), newQuiz.getQuestions());
@@ -62,6 +67,11 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         newQuiz = new Quiz();
+
+        // Format the current date and time
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currentDateAndTime = dateFormat.format(new Date());
+        newQuiz.setQuizDate(currentDateAndTime);
 
         for (Country country : selectedCountries) {
             List<String> continents = new ArrayList<>(countryQuizData.getAllContinents());
@@ -105,8 +115,8 @@ public class QuizActivity extends AppCompatActivity {
         // Proceed to the next question or show results if this was the last question
         if (questionIndex == newQuiz.getQuestions().size() - 1) {
             Log.d("QuizActivity", "Last question answered. Showing quiz results.");
-            new  StoreQuizResult(this).execute(newQuiz);
-            showQuizResults();
+            new StoreQuizResult().execute(newQuiz);
+
         } else {
             // Code to navigate to the next question, e.g., by updating ViewPager2's current item
             Log.d("QuizActivity", "Moving to the next question.");
@@ -115,39 +125,30 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
-
     private void showQuizResults() {
         Intent intent = new Intent(this, QuizResultsActivity.class);
         intent.putExtra("score", newQuiz.getQuizResult());
         intent.putExtra("totalQuestions", newQuiz.getQuestions().size());
         startActivity(intent);
-
     }
 
-    // AsyncTask for saving quiz results
-    public class StoreQuizResult extends AsyncTask<Quiz, Void> {
-        private CountryQuizData countryQuizData;
 
-        public StoreQuizResult(Context context) {
-            this.countryQuizData = new CountryQuizData(context);
+    public class StoreQuizResult extends AsyncTask<Quiz, Quiz> {
+
+        @Override
+        protected Quiz doInBackground(Quiz... quizzes) {
+            // Here, we assume countryQuizData is already initialized and accessible
+            countryQuizData.storeQuiz(quizzes[0]);
+            return quizzes[0];
         }
 
         @Override
-        protected Void doInBackground(Quiz... quizzes) {
-            Quiz quiz = quizzes[0];
-            countryQuizData.open();
-            countryQuizData.storeQuiz(quiz);
-            countryQuizData.close();
-            return null;
-        }
-
-
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-            // Here, you might want to update UI or navigate to another Activity to show the quiz results.
-            // Since AsyncTask runs on a background thread, remember any UI updates must be run on the UI thread.
+        protected void onPostExecute(Quiz quiz) {
+            //super.onPostExecute(quiz);
+            Log.d("StoreQuizResult", "Quiz saved: " + quiz);
+            Log.d("StoreQuizResult", "Last question answered. Showing quiz results.");
+            // Now that the quiz is saved, show the results
+            showQuizResults(); // This method should already be preparing and starting the QuizResultsActivity
         }
     }
 
@@ -171,7 +172,6 @@ public class QuizActivity extends AppCompatActivity {
         if (savedIndex != -1) {
             viewPager.setCurrentItem(savedIndex);
             newQuiz.setQuizResult(savedScore);
-            // Add any additional logic needed to restore the quiz state
         }
     }
 

@@ -24,12 +24,11 @@ public class CountryQuizPagerAdapter extends FragmentStateAdapter {
         // Fetch the current question based on the position
         Question currentQuestion = questions.get(position);
         // Log to track fragment creation for each question
-        Log.d("QuizFlow", "Creating fragment for question at position: " + position);
+        Log.d("CountryQuizPagerAdapter", "Creating fragment for question at position: " + position);
 
         // Extract the question text and options
-        String questionText = currentQuestion.getCountryName(); // Assuming this is what you want to display as the question
-        ArrayList<String> options = new ArrayList<>(currentQuestion.getOptions()); // Convert List to ArrayList if necessary
-
+        String questionText = currentQuestion.getCountryName();
+        ArrayList<String> options = new ArrayList<>(currentQuestion.getOptions());
 
         // Use the newInstance method with the updated parameters
         return CountryQuizFragment.newInstance(questionText, options, position);

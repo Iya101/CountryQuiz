@@ -4,15 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class QuizResultFragment extends Fragment {
 
     private static final String ARG_SCORE = "score";
     private static final String ARG_TOTAL_QUESTIONS = "totalQuestions";
+    private CountryQuizData countryQuizData= null;
 
     public static QuizResultFragment newInstance(int score, int totalQuestions) {
         QuizResultFragment fragment = new QuizResultFragment();
@@ -36,4 +39,8 @@ public class QuizResultFragment extends Fragment {
         }
         return view;
     }
+
+
+
+
 }

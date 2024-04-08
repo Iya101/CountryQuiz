@@ -13,29 +13,16 @@ import java.io.InputStreamReader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DatabaseInitializer {
-
+public class DatabaseInitializer extends AsyncTask<Void, Boolean> {
     private final Context context;
 
     public DatabaseInitializer(Context context) {
         this.context = context.getApplicationContext();
     }
 
-    public void execute() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        executor.execute(() -> {
-            boolean success = initializeDatabase();
-
-            handler.post(() -> {
-                if (success) {
-                    Toast.makeText(context, "Database initialized successfully.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Database already initialized or failed to initialize.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
+    @Override
+    protected Boolean doInBackground(Void... voids) {
+        return initializeDatabase();
     }
 
     private boolean initializeDatabase() {
@@ -57,6 +44,13 @@ public class DatabaseInitializer {
             return false; // Return false if an error occurred
         } finally {
             countryQuizData.close();
+        }
+    }
+    protected void onPostExecute(Boolean success) {
+        if (success) {
+            Toast.makeText(context, "Database initialized successfully.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Database initialization failed.", Toast.LENGTH_SHORT).show();
         }
     }
 }
