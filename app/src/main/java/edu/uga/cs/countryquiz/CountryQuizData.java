@@ -57,6 +57,7 @@ public class CountryQuizData {
         }
     }
 
+    //retrieve all countries method, going through sql table of countries
     public List<Country> retrieveAllCountries() {
         List<Country> countries = new ArrayList<>();
         Cursor cursor = db.query(countryDBHelper.TABLE_COUNTRIES,allColumnsCountries,
@@ -85,7 +86,7 @@ public class CountryQuizData {
         return countries;
     }
 
-
+    //get all continents method, going through sql table of continents
     public List<String> getAllContinents() {
         List<String> continents = new ArrayList<>();
 
@@ -161,8 +162,7 @@ public class CountryQuizData {
         return quiz;
     }
 
-
-    //maybe delete? idk
+    //get all past quizzes to show to user
     public List<Quiz> retrievePastQuizzes() {
         List<Quiz> quizzes = new ArrayList<>();
         Cursor cursor = null;

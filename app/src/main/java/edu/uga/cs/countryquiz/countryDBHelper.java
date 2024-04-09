@@ -18,22 +18,20 @@ public class countryDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_COUNTRIES = "countries";
     public static final String TABLE_QUIZZES = "quizzes";
 
-    // Common column names
+    // COLUMN ID
     public static final String COLUMN_ID = "_id";
 
-    // Countries Table - column names
+    // Countries column names
     public static final String COLUMN_COUNTRY_NAME = "name";
     public static final String COLUMN_CONTINENT = "continent";
 
-    // Quizzes Table - column names
+    // Quizzes column names
     public static final String COLUMN_QUIZ_DATE = "quiz_date";
     public static final String COLUMN_QUIZ_RESULT = "result";
 
-    private static countryDBHelper helperInstance;
+    private static countryDBHelper helperInstance; //helper instance
 
     // A Create table SQL statement to create a table for country quiz
-    // Note that _id is an auto increment primary key, i.e. the database will
-    // automatically generate unique id values as keys.
     private static final String CREATE_TABLE_COUNTRIES = "CREATE TABLE "
             + TABLE_COUNTRIES + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -42,7 +40,7 @@ public class countryDBHelper extends SQLiteOpenHelper {
             ")";
 
 
-    // Quizzes table create statement
+    // Quizzes table creation
     private static final String CREATE_TABLE_QUIZZES = "CREATE TABLE "
             + TABLE_QUIZZES + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -67,10 +65,6 @@ public class countryDBHelper extends SQLiteOpenHelper {
         // creating required tables
         db.execSQL(CREATE_TABLE_COUNTRIES);
         db.execSQL(CREATE_TABLE_QUIZZES);
-
-        // Corrected INSERT statements to match the column names
-        db.execSQL("INSERT INTO countries (name, continent) VALUES ('Germany', 'Europe');");
-        db.execSQL("INSERT INTO quizzes (quiz_date, result) VALUES ('2023-04-01 14:00:00', 8);");
 
         Log.d(DEBUG_TAG, "Table " + TABLE_COUNTRIES + " created");
         Log.d(DEBUG_TAG, "Table " + TABLE_QUIZZES + " created");

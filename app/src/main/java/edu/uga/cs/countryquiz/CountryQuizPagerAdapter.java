@@ -23,7 +23,7 @@ public class CountryQuizPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         // Fetch the current question based on the position
         Question currentQuestion = questions.get(position);
-        // Log to track fragment creation for each question
+
         Log.d("CountryQuizPagerAdapter", "Creating fragment for question at position: " + position);
 
         // Extract the question text and options

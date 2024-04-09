@@ -80,7 +80,7 @@ public class CountryQuizFragment extends Fragment {
             String countryName = getArguments().getString(ARG_COUNTRY_NAME);
             ArrayList<String> options = getArguments().getStringArrayList(ARG_OPTIONS);
 
-            // Construct question text with the country name
+            // question
             String questionText = "Which continent does " + countryName + " belong to?";
             questionTextView.setText(questionText);
 

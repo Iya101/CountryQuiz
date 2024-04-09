@@ -22,9 +22,10 @@ public class PastQuizzesActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.pastQuizzesRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize your database here (make sure it's the correct class)
+        // Initialize database variable
         countryQuizData = new CountryQuizData(this);
 
+        //up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Execute the AsyncTask to load quizzes from the database

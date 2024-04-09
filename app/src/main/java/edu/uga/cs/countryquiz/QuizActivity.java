@@ -27,13 +27,12 @@ import java.util.Random;
 import java.util.Set;
 
 public class QuizActivity extends AppCompatActivity {
+    //bulk of quiz in this method
     private CountryQuizData countryQuizData;
-    private TextView questionTextView;
+
     private ViewPager2 viewPager;
     private Quiz newQuiz;
 
-    //Private CountryDBHelper dBHelper;
-    private RadioGroup optionsRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +44,13 @@ public class QuizActivity extends AppCompatActivity {
         countryQuizData.open();
         newQuiz = generateQuiz();
 
-
         // Setup ViewPager with the quiz questions
         CountryQuizPagerAdapter adapter = new CountryQuizPagerAdapter(getSupportFragmentManager(), getLifecycle(), newQuiz.getQuestions());
         viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         viewPager.setAdapter(adapter);
     }
 
-    private Quiz generateQuiz() {
+    private Quiz generateQuiz() { //make quiz
         List<Country> allCountries = countryQuizData.retrieveAllCountries();
         if (allCountries.isEmpty()) {
             Log.e("QuizActivity", "No countries found in the database.");
@@ -118,7 +116,7 @@ public class QuizActivity extends AppCompatActivity {
             new StoreQuizResult().execute(newQuiz);
 
         } else {
-            // Code to navigate to the next question, e.g., by updating ViewPager2's current item
+            //navigate to the next question
             Log.d("QuizActivity", "Moving to the next question.");
             viewPager.setCurrentItem(questionIndex + 1, true);
             Log.d("QuizActivity","question index:" + questionIndex);

@@ -18,6 +18,7 @@ public class QuizResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_results);
 
+        //up button back to main screen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Retrieve the score and total questions from the intent
@@ -30,7 +31,7 @@ public class QuizResultsActivity extends AppCompatActivity {
         scoreTextView.setText(resultsText);
 
 
-
+        // see past quizzes button
         Button seePastQuizzesButton = findViewById(R.id.seePastQuizzesButton);
         seePastQuizzesButton.setOnClickListener(view -> {
             // Navigate to the PastQuizzesActivity
@@ -39,19 +40,6 @@ public class QuizResultsActivity extends AppCompatActivity {
         });
 
 
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // This ID represents the Home or Up button. In the case of this
-                // activity, the Up button is shown. For
-                // more details, see the Navigation pattern on Android Design:
-                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 

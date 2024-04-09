@@ -13,6 +13,7 @@ public class Country {
         this.continent = null;
     }
 
+    // country class
     public Country( String countryName, String continent ) {
         this.id = -1;  // the primary key id will be set by a setter method
         this.countryName = countryName;
@@ -52,6 +53,6 @@ public class Country {
 
     public String toString()
     {
-        return id + ": " + countryName + " " + continent ;
+        return id + ": " + countryName + " ," + continent ;
     }
 }

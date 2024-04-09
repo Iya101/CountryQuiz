@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //button to start quiz
         Button startQuizButton = findViewById(R.id.startQuizButton);
         startQuizButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, QuizActivity.class);
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        new DatabaseInitializer(this).execute();
+        new DatabaseInitializer(this).execute(); //load database from csv
     }
 
 

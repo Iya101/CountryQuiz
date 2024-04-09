@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//delete? not using anymoreeee
 public class QuizResultFragment extends Fragment {
 
     private static final String ARG_SCORE = "score";

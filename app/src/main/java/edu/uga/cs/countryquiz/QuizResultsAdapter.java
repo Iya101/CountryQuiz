@@ -29,7 +29,7 @@ public class QuizResultsAdapter extends RecyclerView.Adapter<QuizResultsAdapter.
 
         public ViewHolder(View view) {
             super(view);
-            // Initialize your layout views
+            // Initializing layout views
             quizDateView = view.findViewById(R.id.quizDate);
             quizScoreView = view.findViewById(R.id.quizScore);
         }
@@ -38,7 +38,7 @@ public class QuizResultsAdapter extends RecyclerView.Adapter<QuizResultsAdapter.
         public TextView getQuizScoreView() { return quizScoreView; }
     }
 
-    // Create new views (invoked by the layout manager)
+    // Create new views
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
@@ -47,7 +47,7 @@ public class QuizResultsAdapter extends RecyclerView.Adapter<QuizResultsAdapter.
         return new ViewHolder(view);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    // Replace the contents of a view
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder called for position " + position);
@@ -59,7 +59,7 @@ public class QuizResultsAdapter extends RecyclerView.Adapter<QuizResultsAdapter.
     }
 
 
-    // Return the size of your dataset (invoked by the layout manager)
+    // Return the size of dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         Log.d(TAG, "getItemCount called. Returning: " + quizResults.size());

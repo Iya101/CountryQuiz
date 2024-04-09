@@ -1,5 +1,8 @@
 package edu.uga.cs.countryquiz;
 
+
+
+//delete? not using anymore
 public class QuizResult {
     private long id;
     private String quizDate;
